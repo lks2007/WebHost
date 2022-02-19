@@ -1,0 +1,83 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    box-sizing: border-box;
+}
+
+body{
+    background-image: url("/assets/datacenter.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+}
+
+form{
+    width: 350px;
+    height: 360px;
+    background-color: #fff;
+    border-radius: 4px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fa-sign-in-alt{
+    margin-top: 30px;
+    font-size: 30px;
+    color: #4d61fc;
+}
+
+h3{
+    color: #3b3663;
+    display: block;
+    font-size: 28px;
+}
+
+h4{
+    color: #696687;
+font-size: 18px;
+opacity: .8;
+margin-bottom: 20px;
+}
+
+input[type=text], input[type=password]{
+    outline: none;
+    background-color: #fafafa;
+    padding: 12px 10px;
+    border: 2px solid #e9e9e9;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+input[type=submit]{
+    outline: none;
+    background-color: #4d61fc;
+    padding: 15px 45px;
+    color: white;
+    border-radius: 6px;
+    font-size: 16px;
+    margin-top: 10px;
+    border: none;
+    transition: all .5s ease;
+    margin-top: 20px;
+    left: -45px;
+    position: relative;
+}
+
+input[type=submit]:hover {
+    background: #2036de;
+    transform: translateY(-2px);
+}
+
+@media screen and (max-width: 400px) {
+    form{
+        transform: translateX(-50%) translateY(-50%) scale(0.85);
+    }
+}

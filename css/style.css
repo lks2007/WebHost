@@ -1,0 +1,271 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
+*{
+    padding: 0px 0px;
+    margin: 0px 0px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+body{
+    background-color: rgb(231, 231, 231);
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    background-color: #f8f8f8;
+    color: rgb(21, 20, 24);
+    padding-left: 5%;
+    padding-right: 5%;
+    box-shadow: 0px 5px 10px #c4c4c4;
+}
+
+.logo{
+    height: 45px;
+}
+
+ul{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    list-style-type: none;
+}
+
+a{
+    text-decoration: none;
+    color: rgb(25, 25, 36);
+}
+
+.btn{
+    background-color: rgb(58, 58, 245);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.wrapper{
+    margin-top: 40px;
+    text-align: center;
+    width: 100%;
+}
+
+h1{
+    font-size: 90px;
+    font-weight: bolder;
+    color: rgb(17, 16, 19);
+}
+
+h3{
+    margin-top: 40px;
+    font-weight: 400;
+    color: rgb(17, 16, 19);
+    width: 80%;
+    padding-left: 10%;
+    padding-right: 10%;   
+}
+
+.t-40{
+    margin-top: 30px;
+}
+
+.btn-2{
+    padding: 14px 30px;
+    border-radius: 50px;
+    background-color: rgb(58, 58, 245);
+    color: white;
+    font-size: 18px;
+    border: none;
+}
+
+#style{
+    margin-top: 40px;
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
+.service{
+    background-color: #fff;
+    box-shadow: 0px 4px 5px #c4c4c4;
+    width: 200px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin: auto;
+    padding: 10px 0px;
+}
+
+@media screen and (min-width: 1000px) {
+    #style{
+        padding-left: 25%;
+        padding-right: 25%;
+    }
+}
+
+.img{
+    width: 70px;
+}
+
+h2{
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.contain{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.service:first-of-type{
+    margin-left: 0px;
+}
+
+.service:last-of-type{
+    margin-right: 0px;
+}
+
+.btn-3{
+    border-radius: 4px;
+    width: 40px;
+    margin-right: 5px;
+    transition: all .5s;
+}
+
+.btn-3:hover{
+    border-radius: 50px;
+}
+
+.flex{
+    display: flex;
+    align-items: center;
+    color: black;
+}
+
+
+.mod{
+    background-color: #ffffff;
+    border-radius: 4px;
+    padding: 5px;
+    position: absolute;
+    color: #13101a;
+    right: 8%;
+    top: 55px;
+    box-shadow: 0px 4px 8px #a1a1a1;
+    animation: appared 0.5s;
+}
+
+.moda{
+    background-color: #F7F8FB;
+    border-radius: 4px;
+    padding: 5px;
+    position: absolute;
+    color: #13101a;
+    right: 5%;
+    top: 55px;
+    box-shadow: 0px 4px 8px #a1a1a1;
+    animation: appared 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 200px;
+}
+
+.mr-0{
+    margin-right: 0px;
+    margin-top: 10px;
+    width: 45px;
+}
+
+.box{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-direction: row;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 2.5px;
+    margin-bottom: 2.5px;
+    font-size: 18px;
+    width: 150px;
+    text-align: left;
+}
+
+
+.box:first-of-type{
+    margin-top: 0px;
+}
+
+.box:last-of-type{
+    margin-bottom: 0px;
+}
+
+.box p{
+    margin-left: 6px;
+    font-size: 14.5px;
+}
+
+
+li{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+li:first-of-type{
+    margin-left: 0px;
+}
+
+li:last-of-type{
+    margin-right: 0px;
+}
+
+.modal{
+    color: #3b3544 !important;
+    font-size: 26px;
+
+}
+
+@keyframes appared {
+    from{
+        top: 65px;
+        opacity: 0;
+    }
+    to{
+        top: 55px;
+        opacity: 1;
+    }
+}
+
+.name, .email{
+    margin-left: 0px;
+    margin-top: 5px;
+    text-align: center;
+}
+
+.email{
+    font-size: 12px;
+    color: gray;
+}
+
+.name::first-letter{
+    text-transform: uppercase;
+}
+
+.w-50{
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.offer{
+    grid-template-columns: repeat(2, 1fr);
+}
