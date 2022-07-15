@@ -9,10 +9,18 @@ $(window).resize(function() {
 $("li").click(function() {
     if($(this).children(".fa-angle-right").hasClass("down")){
         $(this).children(".fa-angle-right").removeClass("down")
-        $(this).parent().children(".accordion").removeClass("active")
+        if($(this).hasClass("hosting")){
+            $(this).parent().children(".accordion[aria-label|=1]").removeClass("active")
+        }else{
+            $(this).parent().children(".accordion[aria-label|=2]").removeClass("active")
+        }
     }else{
         $(this).children(".fa-angle-right").addClass("down")
-        $(this).parent().children(".accordion").addClass("active")
+        if($(this).hasClass("hosting")){
+            $(this).parent().children(".accordion[aria-label|=1]").addClass("active")
+        }else{
+            $(this).parent().children(".accordion[aria-label|=2]").addClass("active")
+        }
     }
 })
 

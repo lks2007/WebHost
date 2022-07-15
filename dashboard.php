@@ -14,7 +14,8 @@ if(empty($_SESSION['id'])){
     <link rel="stylesheet" href="css/dashboard.css">
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" integrity="sha512-wnea99uKIC3TJF7v4eKk4Y+lMz2Mklv18+r4na2Gn1abDRPPOeef95xTzdwGD9e6zXJBteMIhZ1+68QC5byJZw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
     <link rel="stylesheet" href="material-design-iconic-font/css/material-design-iconic-font.min.css"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css" integrity="sha512-iLYuqv+v/P4u9erpk+KM83Ioe/l7SEmr7wB6g+Kg1qmEit8EShDKnKtLHlv2QXUp7GGJhmqDI+1PhJYLTsfb8w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
 <body>
     <?php require_once "nav2.php" ?>
@@ -22,12 +23,12 @@ if(empty($_SESSION['id'])){
         <div class="left-flex">
             <div class="center">
                 <button class='button'>
-                    <i class="fas fa-shopping-cart"></i> Buy
+                    <i class="fa-solid fa-shopping-cart"></i> Buy
                 </button>
             </div>
             <ul class="list">
-                <li class="l-10"><i class="fas fa-angle-right"></i><i class="fas fa-globe"></i><p>Hosting</p></li>
-                <div class="accordion">
+                <li class="l-10 hosting"><i class="fa-solid fa-angle-right"></i><i class="fa-solid fa-globe"></i><p>Hosting</p></li>
+                <div class="accordion" aria-label="1">
                     <?php
                         require_once 'db.php';
 
@@ -40,14 +41,37 @@ if(empty($_SESSION['id'])){
                         $results = $bdd->fetchAll(PDO::FETCH_ASSOC);
         
                         foreach($results as $result){
-                            echo "<a href='?web=".$result["name"]."'><div class='sm'><i class='fas fa-globe ft'></i><p class='lf'>".$result["name"]."</p></div></a>";
+                            echo "<a href='?web=".$result["name"]."'><div class='sm'><i class='fa-solid fa-cube ft'></i><p class='lf'>".$result["name"]."</p></div></a>";
                         }
                     ?>
                 </div>
-                <li class="l-10"><i class="fas fa-angle-right"></i><i class="fas fa-server"></i><p>Server</p></li>
+                <li class="l-10 server"><i class="fa-solid fa-angle-right"></i><i class="fa-solid fa-server"></i><p>Server</p></li>
+                <div class="accordion" aria-label="2">
+                <?php
+                        require_once 'db.php';
+
+                        $query = "SELECT * FROM server WHERE userid = :id";  
+                        $bdd = $pdo->prepare($query);  
+                        $bdd->execute(array(  
+                            'id' => $_SESSION["id"],
+                        ));
+        
+                        $results = $bdd->fetchAll(PDO::FETCH_ASSOC);
+        
+                        foreach($results as $result){
+                            echo "<a href='?server=".$result["name"]."'><div class='sm'><i class='fa-solid fa-cube ft'></i><p class='lf'>".$result["name"]."</p></div></a>";
+                        }
+                    ?>
+                </div>
             </ul>
         </div>
-        <div class="wrap">
+        <?php if(isset($_GET['box']))
+        {
+            echo '<div class="wrap-2">';
+        }else{
+            echo '<div class="wrap">';
+        }
+        ?>
             <?php if(isset($_GET["web"])){
                 require_once 'db.php';
 
@@ -82,14 +106,101 @@ if(empty($_SESSION['id'])){
                         <div class='bbox'>
                             <h3>General Information</h3>
                             <p class='ac'>Service status</p>
-                            ".ping("localhost", $result["port"])."
+                            ".ping("172.22.2.15", $result["port"])."
                             <p class='ac'>Address</p>
-                            <p class='desc'>0.0.0.0:".$result["port"]."</p>
+                            <a class='desc' href='http://172.22.2.15:".$result["port"]."' target='_blank'>0.0.0.0:".$result["port"]."</a>
                         </div>
-                        <div class='right'>Actions <i class='fa-solid fa-chevron-down'></i></div>
+                    </div>
+                    <div class='left-25'>
+                        <div class='right mg-2'>Actions <i class='fa-solid fa-chevron-down'></i></div>
                     </div>";
+
+                    global $ok;
+                    global $name;
+                    global $realname;
+                    global $user;
+                    global $port_container;
+
+                    $port_container = $result["port"];
+                    $realname = $result["name"];
+                    $user = $result["userid"];
+                    $name = $result["container"];
+                    $name = str_replace(array("\r", "\n"), '', $name);
+
+                    if(ping("172.22.2.15", $result["port"]) === "<button class='inact'>Inactive</button>"){
+                        $ok = 0; 
+                    }else{
+                        $ok = 1;
+                    }
+                    include('javascript.php');
                 }
             }
+
+
+            if(isset($_GET["server"])){
+                require_once 'db.php';
+
+                $query = "SELECT * FROM server WHERE name = :username";  
+                $bdd = $pdo->prepare($query);  
+                $bdd->execute(array(  
+                    'username' => $_GET["server"],
+                ));
+
+                $results = $bdd->fetchAll(PDO::FETCH_ASSOC);
+
+                function parse_timestamp($timestamp, $format = 'F Y')
+                {
+                    return date($format, strtotime($timestamp));
+                }
+
+                function pingAddress($ip) {
+                    $pingresult = exec("/bin/ping -c2 -w2 $ip", $outcome, $status);
+                    if($status == 1){
+                        return "<button class='inact'>Inactive</button>";
+                    }else{
+                        return "<button class='act'>Active</button>";
+                    }
+                }
+
+                foreach($results as $result){
+                    echo "
+                    <div class='left-25'>
+                        <h2>".$result["name"]."</h2>
+                        <p class='au'>Automatic Server created on <b>".parse_timestamp($result["created"])."</b></p>
+                        <div class='bbox'>
+                            <h3>General Information</h3>
+                            <p class='ac'>Service status</p>
+                            ".pingAddress($result["address"])."
+                            <p class='ac'>Address</p>
+                            <p class='desc'>".$result['address']."</p>
+                        </div>
+                    </div>
+                    <div class='left-25'>
+                        <div class='right mg-2'>Actions <i class='fa-solid fa-chevron-down'></i></div>
+                    </div>";
+
+                    global $ok;
+                    global $name;
+                    global $realname;
+                    global $user;
+                    global $ip;
+
+                    $realname = $result["name"];
+                    $user = $result["userid"];
+                    $ip = $result['address'];
+                    $ip = str_replace(array("\r", "\n"), '', $ip);
+                    $name = $result["container"];
+                    $name = str_replace(array("\r", "\n"), '', $name);
+
+                    if(pingAddress($result['address']) === "<button class='inact'>Inactive</button>"){
+                        $ok = 0; 
+                    }else{
+                        $ok = 1;
+                    }
+                    include('js.php');
+                }
+            }
+
             
             if(isset($_GET["box"])){
             if($_GET["box"] == "buy"){
@@ -118,7 +229,7 @@ if(empty($_SESSION['id'])){
 
                             $result = $bdd->rowCount();
                             if($result == 0){
-                                $output = shell_exec("docker run -d -p ".$port.":80 --net wordpress_default -e WORDPRESS_DB_HOST='172.20.0.2:3306' -e WORDPRESS_DB_USER='wordpress' -e WORDPRESS_DB_PASSWORD='wordpress' -e WORDPRESS_DB_NAME='wordpress' -e WORDPRESS_TABLE_PREFIX='wp_".$port."' f070d750f79f");
+                                $output = shell_exec("docker run -d -p 172.22.2.15:".$port.":80 --net wordpress_default -e WORDPRESS_DB_HOST='172.20.0.2:3306' -e WORDPRESS_DB_USER='wordpress' -e WORDPRESS_DB_PASSWORD='wordpress' -e WORDPRESS_DB_NAME='wordpress' -e WORDPRESS_TABLE_PREFIX='wp_".$port."' f070d750f79f");
 
                                 $query = "INSERT INTO web(userid, name, container, port, created) VALUES (:id, :name, :container, :port, current_timestamp);";  
                                 $bdd = $pdo->prepare($query);  
@@ -129,12 +240,45 @@ if(empty($_SESSION['id'])){
                                     'port' => $port,
                                 ));
 
-                                echo '<script>$("form").append(`<a href="http://localhost:'.$port.'" target="_blank">Go to the website</a>`)</script>';
+                                echo '<a href="http://172.22.2.15:'.$port.'" target="_blank">Go to the website</a>';
                             }
                         }
-                    }}
+                    }elseif ($_POST["select"] == "alpine") {
+                        require_once 'db.php';
+
+                        $query = "SELECT * FROM server WHERE name = :username";  
+                        $bdd = $pdo->prepare($query);  
+                        $bdd->execute(array(  
+                            'username' => $_POST["app"],
+                        ));
+
+                        $results = $bdd->rowCount();
+
+                        if($results == 0){
+                            $result = $bdd->rowCount();
+                            if($result == 0){
+                                $output = shell_exec("docker run -d alpine:latest sleep infinity");
+                                $ip = shell_exec("docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ".$output);
+
+                                $query = "INSERT INTO server(userid, name, container, address, created) VALUES (:id, :name, :container, :address, current_timestamp);";  
+                                $bdd = $pdo->prepare($query);  
+                                $bdd->execute(array(
+                                    'id' => $_SESSION["id"],
+                                    'name' => $_POST["app"],
+                                    'container' => $output,
+                                    'address' => $ip,
+                                ));
+
+                                echo '<a href="http://172.22.2.15:'.$port.'" target="_blank">Go to the website</a>';
+                            }
+                    }
+                }}
                 }
-            } ?>
+            }
+            if(empty($_GET["box"]) && empty($_GET["web"])){
+                echo "";
+            }
+            ?>
         </div>
     </div>
 </body>
